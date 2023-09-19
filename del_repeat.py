@@ -162,8 +162,8 @@ def check_dir(dirname, filelist,totalnum):
                 #print(if_has_son_dir)
                 check_dir(subpath, filelist, totalnum)
         #print(if_has_son_dir)
-        if not if_has_son_dir:
-        #if True:
+        #if not if_has_son_dir:
+        if True:
             dirsum=gen_dir_md5sum(dirname)
             subpath = os.path.join(dirname, "dirsum.txt")
             print(subpath)
@@ -433,8 +433,8 @@ def mv_dir(src_dir, dst_dir, father_dict):
             if os.path.isdir(subpath):
                 has_son_dir = True
                 break
-        if has_son_dir:
-            continue
+        #if has_son_dir:
+        #    continue
         newdir = dst_dir+olddir[len(src_dir):]
         if not os.path.exists(newdir):
             #write_log("makedir[%s]" % newdir)
@@ -444,13 +444,15 @@ def mv_dir(src_dir, dst_dir, father_dict):
                 pass
         for item in os.listdir(olddir):
             oldpath=os.path.join(olddir,item)
+            if os.path.isdir(oldpath):
+                continue
             newpath=os.path.join(newdir,item)
             #write_log("src[%s] dst[%s]" % (oldpath, newpath))
             try:
                 shutil.move(oldpath, newpath)
             except Exception as ex:
                 pass
-        if len(os.listdir(olddir))==0:
+        if not has_son_dir and len(os.listdir(olddir))==0:
             os.rmdir(olddir)
         write_log("final_father src\n%s\n new\n%s\n father\n%s\n######################################" % (olddir, newdir, father_dict[olddir]))
 
